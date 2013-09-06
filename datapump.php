@@ -92,7 +92,7 @@ function handleGeozone($link,$devid,$lat,$long) {
 snmp_read_mib("/usr/share/snmp/mibs/IDIRECT-REMOTE-MIB.txt");
 
 // SNMP Query NMS Server
-$a = snmp2_real_walk("204.9.216.11", "dcsatnetwork", 
+$a = snmp2_real_walk("204.9.216.50", "dcsatnetwork", 
 "1.3.6.1.4.1.13732");
 
 // Convert returned data to usable array
