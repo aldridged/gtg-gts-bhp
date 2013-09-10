@@ -6,7 +6,7 @@ if(count($argv)<6)
   die("Usage: insert_bbw.php deviceID deviceName IPAddress Latitude Longitude\n");
 
 // Connect to GTS Database
-$link = mysql_connect('localhost','root','d@t@c0m#-db@s3');
+$link = mysql_connect('localhost','root','d@t@c0m#');
 if (!$link) {
   die("Cannot connect to GTS db");
 };
