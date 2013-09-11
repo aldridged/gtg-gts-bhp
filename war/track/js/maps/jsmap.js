@@ -1090,6 +1090,13 @@ function jsmCreatePushPin(rcdNdx, dsNdx, ppNdx, evRcd)
 
     /* balloon text */
     var html = "";
+    /* add jquery script options for point
+    html += "<script> $(function() { $('#dialogmrtg"+evRcd.optDesc[0]+"').dialog({ autoOpen: false,modal: true }); $('#openermrtg"+evRcd.optDesc[0]+"').click(function() { $('#dialogmrtg"+evRcd.optDesc[0]+"').dialog('open'); }); }); </script>";
+    */
+	/* add div for MRTG dialog
+	html += "<div id='dialog"+evRcd.optDesc[0]+"' title='Performance Information'><iframe src='/mrtg/"+evRcd.optDesc[0]+".html'></iframe></div>";
+	*/
+    /* build table */
     html += "<table class='infoBoxTable' cellspacing='1' cellpadding='1' border='0'>";
     html += "<tr class='infoBoxRow'><td class='infoBoxCell'><b>"+dev+"</b></td></tr>";
     html += "<tr class='infoBoxRow'><td class='infoBoxCell'><b>"+TEXT_INFO_DATE   +":</b> "+dtime+"</td></tr>";
@@ -1131,7 +1138,9 @@ function jsmCreatePushPin(rcdNdx, dsNdx, ppNdx, evRcd)
             }
         }
     }
+    /* Remove GPS Link
     if (IS_FLEET) html += "<tr class='infoBoxRow'><td class='infoBoxCell'><a href='Track?page=map.device&device="+evRcd.optDesc[0]+"'>GPS Tracking Details</a></td></tr>";
+	*/
     if (IS_FLEET) html += "<tr class='infoBoxRow'><td class='infoBoxCell'><a href='/mrtg/"+evRcd.optDesc[0]+".html' target='_blank'>Device Traffic Data</a></td></tr>";
     if (IS_FLEET) html += "<tr class='infoBoxRow'><td class='infoBoxCell'><a href='/portal/"+evRcd.optDesc[0]+".html' target='_blank'>Device Cases and Attachments</a></td></tr>";
     if (IS_FLEET) html += "<tr class='infoBowRow'><td class='infoBoxCell'><a href='mailto:noc@getdatacom.com?subject=Trouble-Ticket-"+(dev.split(' ').join('-')).split('#').join('')+"'>Raise Trouble Ticket</a></td></tr>";
