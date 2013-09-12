@@ -52,6 +52,12 @@ function mtStatusPing($host) {
   $depth = count($ARRAY)-1;
   $avgpingtime = convertms($ARRAY[$depth]['avg-rtt']);
   $packetloss = $ARRAY[$depth]['packet-loss'];
+  
+  // Handle failed connects
+  if(!isset($ARRAY)) {
+    $avgpingtime = 0;
+    $packetloss = 100;
+    };
 
   if ($packetloss>50)
     $status = 40002;
@@ -221,6 +227,7 @@ $index++;
 while ($ar = mysql_fetch_array($res, MYSQL_BOTH)) {
   list($curstat,$latency,$pl,$pubip) = mtStatusPing($ar['ipAddressCurrent']);
   list($uptime,$rawuptime) = mtUptime($ar['ipAddressCurrent']);
+  if($ar['ipAddressCurrent']=='0.0.0.0') $curstat=39999;
   $avail24h = Avail($ar['deviceID'],144);
   $avail7d = Avail($ar['deviceID'],1008);
   $avail30d = Avail($ar['deviceID'],4320);
