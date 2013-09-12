@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>JQuery Test Page</title>
+<!-- jquery ui -->
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/ui-lightness/jquery-ui.css" />
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+</head>
+
+<body>
+<script>
+$(function() {
+  $("#dialogperf").dialog({
+    autoOpen: false,
+    height: 500,
+    width: 700,
+    modal: true
+    });
+
+  $("#openerperf").click(function() {
+    $("#dialogperf").dialog("open");
+    });
+    
+  $("#dialogportal").dialog({
+    autoOpen: false,
+    height: 500,
+    width: 700,
+    modal: true
+    });
+    
+  $("#openerportal").click(function() {
+    $("#dialogportal").dialog("open");
+    });
+  });
+</script>
+
+<div id="dialogportal" title="CRM Information">
+  <iframe src="/portal/bbwbhp1.html" frameborder="0" height="100%" width="100%" scrolling="auto"></iframe>
+</div>
+
+<div id="dialogperf" title="Performance Stats">
+  <iframe src="/mrtg/bbwbhp1.html" frameborder="0" height="100%" width="100%" scrolling="auto"></iframe>
+</div>
+
+<button id="openerperf" style="width:250px">Open Performance Dialog</button><br /><br />
+<button id="openerportal" style="width:250px">Open CRM Information Dialog</button>
+
+</body>
+
+</html>
