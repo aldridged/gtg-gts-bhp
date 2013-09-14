@@ -12,6 +12,17 @@
 
 <body>
 <script>
+function addNewButton() 
+{
+  var mydiv = $(document.createElement("div"));
+  mydiv.id = "dialognew";
+  mydiv.title = "New Dialog";
+  $(mydiv).html("<iframe src='portal/bbwbhp1.html' frameborder='0' height='100%' width='100%' scrolling='auto'></iframe>");
+  $(mydiv).dialog({title:"New Dialog",height:500,width:700,modal:true});
+};
+</script>
+
+<script>  
 $(function() {
   $("#dialogperf").dialog({
     autoOpen: false,
@@ -34,6 +45,7 @@ $(function() {
   $("#openerportal").click(function() {
     $("#dialogportal").dialog("open");
     });
+    
   });
 </script>
 
@@ -46,8 +58,8 @@ $(function() {
 </div>
 
 <button id="openerperf" style="width:250px">Open Performance Dialog</button><br /><br />
-<button id="openerportal" style="width:250px">Open CRM Information Dialog</button>
-
+<button id="openerportal" style="width:250px">Open CRM Information Dialog</button><br /><br />
+<button onclick="addNewButton();" style="width: 250px">Create New Dialog</button><br /><br />
 </body>
 
 </html>
