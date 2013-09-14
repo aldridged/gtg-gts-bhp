@@ -60,6 +60,7 @@ $(function() {
 <button id="openerperf" style="width:250px">Open Performance Dialog</button><br /><br />
 <button id="openerportal" style="width:250px">Open CRM Information Dialog</button><br /><br />
 <button onclick="addNewButton();" style="width: 250px">Create New Dialog</button><br /><br />
+<button onclick="var mydiv = $(document.createElement('div'));$(mydiv).html('<iframe src=\'portal/bbwbhp1.html\' frameborder=\'0\' height=\'100%\' width=\'100%\' scrolling=\'auto\'></iframe>');$(mydiv).dialog({title:'Inline Dialog',height:500,width:700,modal:true});" style="width: 250px">Inline Create</button>
 </body>
 
 </html>
