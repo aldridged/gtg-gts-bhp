@@ -91,6 +91,18 @@ function Avail($devid,$period) {
   $ar = mysql_fetch_array($res, MYSQL_BOTH);
   return($ar['AV2']);
   };
+  
+// Function to get latency over period samples
+function Latency($devid,$period) {
+  $res = mysql_query("select ROUND(AVG(x.LT),2) as LT2 from (select substring(rawData,locate(':',rawData)+1,(locate(' ',rawData)-locate(':',rawData)-1)) as LT from EventData where accountID='gtg' and deviceID='".$devid."' and rawData is not null order by timestamp DESC limit ".$period.") as x;");
+
+  if (!$res) {
+    die("Error cannot get latency information");
+  };
+
+  $ar = mysql_fetch_array($res, MYSQL_BOTH);
+  return($ar['LT2']);
+  };
 
 // Function to handle ping
 function ping($host, $timeout = 1) {
@@ -231,9 +243,12 @@ while ($ar = mysql_fetch_array($res, MYSQL_BOTH)) {
   $avail24h = Avail($ar['deviceID'],144);
   $avail7d = Avail($ar['deviceID'],1008);
   $avail30d = Avail($ar['deviceID'],4320);
+  $latency24h = Latency($ar['deviceID'],144);
+  $latency7d = Latency($ar['deviceID'],1008);
+  $latency30d = Latency($ar['deviceID'],4320);
   $insertquery[$index] = "REPLACE INTO EventData SET accountID='gtg',deviceID='".$ar['deviceID']."',timestamp=".time().",statusCode=".$curstat.",rawData='Latency:".$latency." Packet Loss:".$pl."% Public IP:".$pubip." Uptime:".$uptime."';";
   $index++;
-  $insertquery[$index] = "UPDATE Device SET lastInputState=".$curstat.",lastRtt=".$latency.",notes='<br>24 Hour Availability: ".$avail24h."%<br>7 Day Availability: ".$avail7d."%<br>30 Day Availability: ".$avail30d."%<br>Packet Loss: ".$pl."%<br>Current Public IP: ".$pubip."<br>Uptime: ".$rawuptime."s<br>' WHERE deviceID='".$ar['deviceID']."';";
+  $insertquery[$index] = "UPDATE Device SET lastInputState=".$curstat.",lastRtt=".$latency.",notes='<br>24 Hour Availability: ".$avail24h."%<br>7 Day Availability: ".$avail7d."%<br>30 Day Availability: ".$avail30d."%<br>Packet Loss: ".$pl."%<br>24 Hour Latency: ".$latency24h." ms<br>7 Day Latency: ".$latency7d." ms<br>30 Day Latency: ".$latency30d." ms<br>Current Public IP: ".$pubip."<br>Uptime: ".$rawuptime."s<br>' WHERE deviceID='".$ar['deviceID']."';";
   $index++;
 };
 
