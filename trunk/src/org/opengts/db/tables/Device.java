@@ -586,7 +586,7 @@ public class Device // Asset
         new DBField(FLD_duplexMaxConn        , Integer.TYPE        , DBField.TYPE_UINT16      , "Max Duplex Conn per Interval", "edit=2"),
         new DBField(FLD_duplexMaxConnPerMin  , Integer.TYPE        , DBField.TYPE_UINT16      , "Max Duplex Conn per Minute"  , "edit=2"),
         // Last Event
-        new DBField(FLD_ipAddressCurrent     , DTIPAddress.class   , DBField.TYPE_STRING(32)  , "Current IP Address"          , ""),
+        new DBField(FLD_ipAddressCurrent     , DTIPAddress.class   , DBField.TYPE_STRING(32)  , "Current IP Address"          , "edit=2"),
         new DBField(FLD_remotePortCurrent    , Integer.TYPE        , DBField.TYPE_UINT16      , "Current Remote Port"         , ""),
         new DBField(FLD_listenPortCurrent    , Integer.TYPE        , DBField.TYPE_UINT16      , "Current Listen Port"          , ""),
         new DBField(FLD_lastInputState       , Long.TYPE           , DBField.TYPE_UINT32      , "Last Input State"            , ""),
