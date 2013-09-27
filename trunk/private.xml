@@ -1110,18 +1110,18 @@ Notes:
             <Page rtKey="ReportMenuFleetSummary" class="org.opengts.war.track.page.ReportMenuFleetSummary">
                 <AclName>acl.reportGroup.summary</AclName>
                 </Page>
-            <Page rtKey="ReportMenuDriverPerformance" class="org.opengts.war.track.page.ReportMenuDriverPerformance">
+       <!-- <Page rtKey="ReportMenuDriverPerformance" class="org.opengts.war.track.page.ReportMenuDriverPerformance">
                 <AclName>acl.reportGroup.performance</AclName>
-                </Page>
+                </Page> -->
        <!-- <Page class="org.opengts.war.track.page.ReportMenuIFTA">
                 <AclName>acl.reportGroup.ifta</AclName>
                 </Page> -->
         </MenuGroup>
         <MenuGroup name="menuGroup.admin" topMenu="true" menuBar="true">
             <Title i18n="PrivateXML.menugroup.administration">Administration</Title>
-            <Page rtKey="AccountInfo" class="org.opengts.war.track.page.AccountInfo">
+            <!-- <Page rtKey="AccountInfo" class="org.opengts.war.track.page.AccountInfo">
                 <AclName>acl.admin.account</AclName>
-                </Page>
+                </Page> -->
             <Page rtKey="UserInfo" class="org.opengts.war.track.page.UserInfo">
                 <AclName>acl.admin.user</AclName>
                 </Page>
@@ -1140,9 +1140,9 @@ Notes:
                 <AclName>acl.admin.driver</AclName>
                 </Page>
                 -->
-            <Page rtKey="ZoneInfo" class="org.opengts.war.track.page.ZoneInfo">
+            <!-- <Page rtKey="ZoneInfo" class="org.opengts.war.track.page.ZoneInfo">
                 <AclName>acl.admin.zone</AclName>
-                </Page>
+                </Page> -->
             <Page rtKey="RuleInfo" class="org.opengts.rulewar.track.page.RuleInfo"
                 optional="true">
                 <AclName>acl.admin.rule</AclName>
