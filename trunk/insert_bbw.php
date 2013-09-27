@@ -16,6 +16,10 @@ if (!mysql_select_db('gts')) {
   die("Cannot select GTS db");
 };
 
+// Make sure deviceid and devicename are lowercase
+$argv[1] = strtolower($argv[1]);
+$argv[2] = strtolower($argv[2]);
+
 // Create queries to insert device
 $devicequery = "INSERT INTO Device (accountID,deviceID,groupID,equipmentType,vehicleID,uniqueID,displayName,description,ipAddressCurrent,isActive,lastInputState,lastUpdateTime) VALUES ('gtg','".$argv[1]."','bbw','netmodem','".$argv[2]."','".$argv[1]."','".$argv[2]."','".$argv[2]."','".$argv[3]."',1,39999,".time().") ON DUPLICATE KEY UPDATE groupID=VALUES(groupID),lastUpdateTime=VALUES(lastUpdateTime),ipAddressCurrent=VALUES(ipAddressCurrent);";
 $eventquery = "REPLACE INTO EventData SET accountID='gtg',deviceID='".$argv[1]."',timestamp=".time().",statusCode=61472,latitude=".$argv[4].",longitude=".$argv[5].";";
