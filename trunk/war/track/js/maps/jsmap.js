@@ -1354,8 +1354,9 @@ function jsmShowDetailReport()
     html += _jsmShowDetailReport_header( 25, "#");
     if (IS_FLEET) { html += _jsmShowDetailReport_header(-1, TEXT_DEVICE); }
     html += _jsmShowDetailReport_header( -1, TEXT_DATE);
-    html += _jsmShowDetailReport_header( -1, TEXT_CODE);
+    //html += _jsmShowDetailReport_header( -1, TEXT_CODE);
     html += _jsmShowDetailReport_header( -1, TEXT_LATLON);
+    /*
     if (SHOW_SAT_COUNT) {
         html += _jsmShowDetailReport_header( -1, TEXT_SATCOUNT);
     }
@@ -1368,10 +1369,11 @@ function jsmShowDetailReport()
     if (SHOW_ADDR) { 
         html += _jsmShowDetailReport_header( -1, TEXT_ADDR); 
     }
+    */
     if (SHOW_OPT_FIELDS) {
         for (var opti = 0; opti < OptionalEventFieldCount(); opti++) {
             var d = OptionalEventFieldTitle(opti);
-            html += _jsmShowDetailReport_header( -1, d); 
+            if ((opti == 1)||(opti == 7)) {html += _jsmShowDetailReport_header( -1, d);}; 
         }
     }
     html += "</tr>\n";
@@ -1416,10 +1418,13 @@ function jsmShowDetailReport()
         }
         // date/time
         html += "<td nowrap class='"+dataClass+"'>" + pt.dateTime + "</td>";
+        /*
         // status code
         html += "<td nowrap class='"+dataClass+"'>" + pt.code     + "</td>";
+        */
         // latitude/longitude
         html += "<td nowrap class='"+dataClass+"'>" + pt.latlon   + "</td>";
+        /*
         // # Sats
         if (SHOW_SAT_COUNT) {
             html += "<td nowrap class='"+dataClass+"'>" + pt.satCount + "</td>";
@@ -1438,11 +1443,12 @@ function jsmShowDetailReport()
         if (SHOW_ADDR) { 
             html += "<td nowrap class='"+dataClass+"'>" + pt.address + "&nbsp;</td>"; 
         }
+        */
         // optional fields
         if (SHOW_OPT_FIELDS) {
             for (var opti = 0; opti < OptionalEventFieldCount() && (opti < 10); opti++) {
                 var v = (pt.optDesc && (opti < pt.optDesc.length))? pt.optDesc[opti] : "";
-                html += "<td nowrap class='"+dataClass+"'>" + v + "&nbsp;</td>"; 
+                if((opti == 1)||(opti == 7)) {html += "<td nowrap class='"+dataClass+"'>" + v + "&nbsp;</td>";}; 
             }
         }
         html += "</tr>\n";
