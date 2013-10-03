@@ -1212,7 +1212,7 @@ Notes:
         <Report name="EventDetail">
             <AclName>acl.report.eventDetail</AclName>
             </Report>
-        <Report name="TripReport"
+        <!-- <Report name="TripReport"
             optional="true">
             <AclName>acl.report.tripReport</AclName>
             </Report>
@@ -1232,25 +1232,29 @@ Notes:
             optional="true">
             <AclName>acl.report.thermo</AclName>
             </Report>
-        <Report name="PropertyValue">
+        <Report name="PropertyValue"
+	    optional="true">
             <AclName>acl.report.propertyValue</AclName>
             </Report>
-        <Report name="DiagnosticValue">
+        <Report name="DiagnosticValue"
+	    optional="true">
             <AclName>acl.report.diagnosticValue</AclName>
-            </Report>
+            </Report> -->
 
         <!-- fleet.detail -->
         <Report name="EventDetail_Group">
             <AclName>acl.report.eventDetail</AclName>
             </Report>
-        <Report name="EventSpeedOption_Group">
+        <!-- <Report name="EventSpeedOption_Group"
+	    optional="true">
             <AclName>acl.report.speedOption</AclName>
-            </Report>
+            </Report> -->
 
         <!-- fleet.summary -->
-        <Report name="EventSummary">
+        <!-- <Report name="EventSummary"
+	optional="true">
             <AclName>acl.report.eventSummary</AclName>
-            </Report>
+            </Report> -->
         <Report name="EventCount">
             <AclName>acl.report.eventCount</AclName>
             </Report>
