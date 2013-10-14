@@ -532,6 +532,8 @@ public class Device // Asset
     public static final String FLD_lastRtt               = "lastRtt";
     // last Reason
     public static final String FLD_lastReason            = "lastReason";
+    // Job Number Link to Sugar CRM
+    public static final String FLD_jobNumber			 = "jobNumber";
     // offset to reported odometer
     //
     private static DBField FieldInfo[] = {
@@ -602,6 +604,7 @@ public class Device // Asset
 	new DBField(FLD_lastPowerDbm         , Double.TYPE         , DBField.TYPE_DOUBLE      , "Last Power"                  , "format=#0.0"),
 	new DBField(FLD_lastRtt              , Double.TYPE         , DBField.TYPE_DOUBLE      , "Last RTT"                    , "format=#0.0"),
 	new DBField(FLD_lastReason           , String.class        , DBField.TYPE_TEXT        , "Last Reason"                 , ""),
+	new DBField(FLD_jobNumber			 , Long.TYPE		   , DBField.TYPE_UINT32      , "Job Number"				  , ""),
         // Common fields
         newField_isActive(),
         newField_displayName(),
