@@ -1217,9 +1217,9 @@ public class DeviceInfo
                     out.write("   <th class='"+CommonServlet.CSS_ADMIN_TABLE_HEADER_COL    +"' nowrap>"+FilterText(i18n.getString("DeviceInfo.uniqueID","Unique ID"))+"</th>\n");
                     out.write("   <th class='"+CommonServlet.CSS_ADMIN_TABLE_HEADER_COL    +"' nowrap>"+FilterText(i18n.getString("DeviceInfo.decription","Description",devTitles))+"</th>\n");
                     out.write("   <th class='"+CommonServlet.CSS_ADMIN_TABLE_HEADER_COL    +"' nowrap>"+FilterText(i18n.getString("DeviceInfo.devEquipType","Equipment\nType"))+"</th>\n");
-                    out.write("   <th class='"+CommonServlet.CSS_ADMIN_TABLE_HEADER_COL    +"' nowrap>"+FilterText(i18n.getString("DeviceInfo.simPhoneNumber","SIM Phone#"))+"</th>\n");
-                    out.write("   <th class='"+CommonServlet.CSS_ADMIN_TABLE_HEADER_COL    +"' nowrap>"+FilterText(i18n.getString("DeviceInfo.devServerID","Server ID"))+"</th>\n");
-                    out.write("   <th class='"+CommonServlet.CSS_ADMIN_TABLE_HEADER_COL    +"' nowrap>"+FilterText(i18n.getString("DeviceInfo.ignitionState","Ignition\nState"))+"</th>\n");
+                    //out.write("   <th class='"+CommonServlet.CSS_ADMIN_TABLE_HEADER_COL    +"' nowrap>"+FilterText(i18n.getString("DeviceInfo.simPhoneNumber","SIM Phone#"))+"</th>\n");
+                    //out.write("   <th class='"+CommonServlet.CSS_ADMIN_TABLE_HEADER_COL    +"' nowrap>"+FilterText(i18n.getString("DeviceInfo.devServerID","Server ID"))+"</th>\n");
+                    //out.write("   <th class='"+CommonServlet.CSS_ADMIN_TABLE_HEADER_COL    +"' nowrap>"+FilterText(i18n.getString("DeviceInfo.ignitionState","Ignition\nState"))+"</th>\n");
                     if (showAcks) {
                     out.write("   <th class='"+CommonServlet.CSS_ADMIN_TABLE_HEADER_COL    +"' nowrap>"+FilterText(i18n.getString("DeviceInfo.ackExpected","Expecting\nACK"))+"</th>\n");
                     }
@@ -1268,9 +1268,9 @@ public class DeviceInfo
                                 out.write("   <td class='"+CommonServlet.CSS_ADMIN_TABLE_BODY_COL    +"' nowrap>"+uniqueID+"</td>\n");
                                 out.write("   <td class='"+CommonServlet.CSS_ADMIN_TABLE_BODY_COL    +"' nowrap>"+deviceDesc+"</td>\n");
                                 out.write("   <td class='"+CommonServlet.CSS_ADMIN_TABLE_BODY_COL    +"' nowrap>"+equipType+"</td>\n");
-                                out.write("   <td class='"+CommonServlet.CSS_ADMIN_TABLE_BODY_COL    +"' nowrap>"+simPhone+"</td>\n");
-                                out.write("   <td class='"+CommonServlet.CSS_ADMIN_TABLE_BODY_COL    +"' nowrap>"+devCode+"</td>\n");
-                                out.write("   <td class='"+CommonServlet.CSS_ADMIN_TABLE_BODY_COL    +"' nowrap style='color:"+ignColor+"'>"+ignDesc+"</td>\n");
+                                //out.write("   <td class='"+CommonServlet.CSS_ADMIN_TABLE_BODY_COL    +"' nowrap>"+simPhone+"</td>\n");
+                                //out.write("   <td class='"+CommonServlet.CSS_ADMIN_TABLE_BODY_COL    +"' nowrap>"+devCode+"</td>\n");
+                                //out.write("   <td class='"+CommonServlet.CSS_ADMIN_TABLE_BODY_COL    +"' nowrap style='color:"+ignColor+"'>"+ignDesc+"</td>\n");
                                 if (showAcks) {
                                 out.write("   <td class='"+CommonServlet.CSS_ADMIN_TABLE_BODY_COL    +"' nowrap style='color:red'>"+pendingACK+"</td>\n");
                                 }
@@ -1403,9 +1403,9 @@ public class DeviceInfo
                     String firmVers = (_selDev!=null)? _selDev.getCodeVersion() : "";
                     out.println("<table class='"+CommonServlet.CSS_ADMIN_VIEW_TABLE+"' cellspacing='0' callpadding='0' border='0'>");
                     out.println(FormRow_TextField(PARM_DEVICE           , false      , i18n.getString("DeviceInfo.deviceID","{0} ID",devTitles)+":"        , _selDevID, 30, 30));
-                    out.println(FormRow_TextField(PARM_SERVER_ID        , edSrvID    , i18n.getString("DeviceInfo.serverID","Server ID")+":"               , (_selDev!=null)?DCServerFactory.getServerConfigDescription(_selDev.getDeviceCode()):"", 18, 20));
+                    //out.println(FormRow_TextField(PARM_SERVER_ID        , edSrvID    , i18n.getString("DeviceInfo.serverID","Server ID")+":"               , (_selDev!=null)?DCServerFactory.getServerConfigDescription(_selDev.getDeviceCode()):"", 18, 20));
                     //if (!StringTools.isBlank(firmVers)) {
-                    out.println(FormRow_TextField(PARM_CODE_VERS        , false      , i18n.getString("DeviceInfo.firmwareVers","Firmware Version")+":"   , firmVers, 28, 28));
+                    //out.println(FormRow_TextField(PARM_CODE_VERS        , false      , i18n.getString("DeviceInfo.firmwareVers","Firmware Version")+":"   , firmVers, 28, 28));
                     //}
                     if (_viewUniqID) {
                     out.println(FormRow_TextField(PARM_DEV_UNIQ         , _editUniqID, i18n.getString("DeviceInfo.uniqueID","Unique ID")+":"               , (_selDev!=null)?_selDev.getUniqueID():""       , 30, 30));
@@ -1413,15 +1413,15 @@ public class DeviceInfo
                     out.println(FormRow_ComboBox (PARM_DEV_ACTIVE       , _uiEdit    , i18n.getString("DeviceInfo.active","Active")+":"                    , devActive, ComboMap.getYesNoMap(locale), ""    , -1));
                     out.println(FormRow_TextField(PARM_DEV_DESC         , _uiEdit    , i18n.getString("DeviceInfo.deviceDesc","{0} Description",devTitles) +":", (_selDev!=null)?_selDev.getDescription():"", 40, 64));
                     out.println(FormRow_TextField(PARM_DEV_NAME         , _uiEdit    , i18n.getString("DeviceInfo.displayName","Short Name") +":"          , (_selDev!=null)?_selDev.getDisplayName():""    , 16, 64));
-                    out.println(FormRow_TextField(PARM_VEHICLE_ID       , _uiEdit    , i18n.getString("DeviceInfo.vehicleID","Vehicle ID") +":"            , (_selDev!=null)?_selDev.getVehicleID():""      , 24, 24));
+                    //out.println(FormRow_TextField(PARM_VEHICLE_ID       , _uiEdit    , i18n.getString("DeviceInfo.vehicleID","Vehicle ID") +":"            , (_selDev!=null)?_selDev.getVehicleID():""      , 24, 24));
                     out.println(FormRow_TextField(PARM_DEV_EQUIP_TYPE   , _uiEdit    , i18n.getString("DeviceInfo.equipmentType","Equipment Type") +":"    , (_selDev!=null)?_selDev.getEquipmentType():""  , 30, 40));
-                    out.println(FormRow_TextField(PARM_DEV_IMEI         , _uiEdit    , i18n.getString("DeviceInfo.imeiNumber","IMEI/ESN Number") +":"      , (_selDev!=null)?_selDev.getImeiNumber():""     , 16, 18));
+                    //out.println(FormRow_TextField(PARM_DEV_IMEI         , _uiEdit    , i18n.getString("DeviceInfo.imeiNumber","IMEI/ESN Number") +":"      , (_selDev!=null)?_selDev.getImeiNumber():""     , 16, 18));
 		    out.println(FormRow_TextField(PARM_IP_ADDRESS_CURRENT,_uiEdit    , i18n.getString("DeviceInfo.ipAddressCurrent","Current IP Address") +":",(_selDev!=null)?(String)_selDev.getIpAddressCurrent().getObject():"",16,18));
                     if (dataKeyOK) {
                     out.println(FormRow_TextField(PARM_DATA_KEY         , _uiEdit    , i18n.getString("DeviceInfo.dataKey","Data Key") +":"                , (_selDev!=null)?_selDev.getDataKey():""        , 60, 200));
                     }
-                    out.println(FormRow_TextField(PARM_DEV_SIMPHONE     , _uiEdit    , i18n.getString("DeviceInfo.simPhoneNumber","SIM Phone#") +":"       , (_selDev!=null)?_selDev.getSimPhoneNumber():"" , 14, 18));
-                    out.println(FormRow_TextField(PARM_SMS_EMAIL        , _uiEdit    , i18n.getString("DeviceInfo.smsEmail","SMS Email Address") +":"      , (_selDev!=null)?_selDev.getSmsEmail():""       , 60, 60));
+                    //out.println(FormRow_TextField(PARM_DEV_SIMPHONE     , _uiEdit    , i18n.getString("DeviceInfo.simPhoneNumber","SIM Phone#") +":"       , (_selDev!=null)?_selDev.getSimPhoneNumber():"" , 14, 18));
+                    //out.println(FormRow_TextField(PARM_SMS_EMAIL        , _uiEdit    , i18n.getString("DeviceInfo.smsEmail","SMS Email Address") +":"      , (_selDev!=null)?_selDev.getSmsEmail():""       , 60, 60));
                     if (ppidOK) {
                         String ppDesc = i18n.getString("DeviceInfo.mapPushpinID","{0} Pushpin ID",grpTitles)+":";
                         String ppid = (_selDev != null)? _selDev.getPushpinID() : "";
@@ -1455,7 +1455,7 @@ public class DeviceInfo
                         dcCombo.add(ColorTools.PINK.toString(true)            ,i18n.getString("DeviceInfo.color.pink"   ,"Pink"   ));
                         out.println(FormRow_ComboBox(PARM_DISPLAY_COLOR, _uiEdit, dcDesc, dcolor, dcCombo, "", -1));
                     }
-                    if (ignOK) {
+                    /* if (ignOK) {
                         ComboMap ignList = new ComboMap(new String[] { "n/a", "0", "1", "2", "3", "4", "5", "6", "7", "ign" });
                         int ignNdx = (_selDev != null)? _selDev.getIgnitionIndex() : -1;
                         String ignSel = "";
@@ -1468,22 +1468,22 @@ public class DeviceInfo
                             ignSel = String.valueOf(ignNdx);
                         }
                         out.println(FormRow_ComboBox( PARM_IGNITION_INDEX, _uiEdit   , i18n.getString("DeviceInfo.ignitionIndex","Ignition Input") +":" , ignSel, ignList, "", -1, i18n.getString("DeviceInfo.ignitionIndexDesc","(ignition input line, if applicable)")));
-                    }
-                    double fuelCapUnits = (_selDev!=null)? Account.getVolumeUnits(currAcct).convertFromLiters(_selDev.getFuelCapacity()) : 0.0;
-                    String fuelCapStr   = StringTools.format(fuelCapUnits, "0.0");
-                    out.println(FormRow_TextField(PARM_DEV_FUEL_CAP     , _uiEdit    , i18n.getString("DeviceInfo.fuelCapacity","Fuel Capacity") +":"      , fuelCapStr                                     , 10, 10, volmUnitsStr));
+                    } */
+                    //double fuelCapUnits = (_selDev!=null)? Account.getVolumeUnits(currAcct).convertFromLiters(_selDev.getFuelCapacity()) : 0.0;
+                    //String fuelCapStr   = StringTools.format(fuelCapUnits, "0.0");
+                    //out.println(FormRow_TextField(PARM_DEV_FUEL_CAP     , _uiEdit    , i18n.getString("DeviceInfo.fuelCapacity","Fuel Capacity") +":"      , fuelCapStr                                     , 10, 10, volmUnitsStr));
                     // Maintenance Section
                     if (Device.supportsPeriodicMaintenance()) {
                         // add separator before odometer if maintenance is supported
                         out.println(FormRow_Separator());
                     }
-                    if (Device.supportsLastOdometer()) {
+                    /* if (Device.supportsLastOdometer()) {
                         double odomKM   = (_selDev != null)? _selDev.getLastOdometerKM() : 0.0;
                         double offsetKM = (_selDev != null)? _selDev.getOdometerOffsetKM() : 0.0;
                         double rptOdom  = distUnits.convertFromKM(odomKM + offsetKM);
                         String odomStr  = StringTools.format(rptOdom, "0.0");
                         out.println(FormRow_TextField(PARM_REPORT_ODOM, _uiEdit, i18n.getString("DeviceInfo.reportOdometer","Reported Odometer") +":" , odomStr, 10, 11, distUnitsStr));
-                    }
+                    } */
                     if (Device.supportsPeriodicMaintenance()) {
                         double offsetKM = (_selDev != null)? _selDev.getOdometerOffsetKM() : 0.0;
                         // Maintenance Notes
