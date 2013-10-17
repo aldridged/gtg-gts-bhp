@@ -172,6 +172,7 @@ public class DeviceInfo
     public  static final String PARM_IGNITION_INDEX         = "d_ignndx";
     public  static final String PARM_DEV_GROUP_             = "d_grp_";
 	public  static final String PARM_IP_ADDRESS_CURRENT		= "d_ip_address_current";   //DTA Added to add ip to list
+	public  static final String PARM_JOB_NUMBER				= "d_job_number";			//DTA Added to add job number to the list
 
     public  static final String PARM_REPORT_ODOM            = "d_rptodom";
     public  static final String PARM_MAINT_INTERVAL_        = "d_mntintr";
@@ -430,6 +431,7 @@ public class DeviceInfo
         double  fixedLon  = AttributeTools.getRequestDouble(request, PARM_FIXED_LON         , 0.0);
         String  ignition  = AttributeTools.getRequestString(request, PARM_IGNITION_INDEX    , "");
 		String  ipAddrCur = AttributeTools.getRequestString(request, PARM_IP_ADDRESS_CURRENT, "");
+		long    jobNum = AttributeTools.getRequestLong(request, PARM_JOB_NUMBER, 0);
         String  grpKeys[] = AttributeTools.getMatchingKeys( request, PARM_DEV_GROUP_);
         String  cstKeys[] = AttributeTools.getMatchingKeys( request, PARM_DEV_CUSTOM_);
         double  rptOdom   = AttributeTools.getRequestDouble(request, PARM_REPORT_ODOM       , 0.0);
@@ -503,6 +505,10 @@ public class DeviceInfo
 			// IP Address
 			if (!selDev.getIpAddressCurrent().equals(ipAddrCur)) {
 				selDev.setIpAddressCurrent(ipAddrCur);
+			}
+			// Job Number
+			if (selDev.getJobNumber() != jobNum) {
+				selDev.setJobNumber(jobNum);
 			}
             // IMEI number
             if (!selDev.getImeiNumber().equals(imeiNum)) {
@@ -1416,7 +1422,10 @@ public class DeviceInfo
                     //out.println(FormRow_TextField(PARM_VEHICLE_ID       , _uiEdit    , i18n.getString("DeviceInfo.vehicleID","Vehicle ID") +":"            , (_selDev!=null)?_selDev.getVehicleID():""      , 24, 24));
                     out.println(FormRow_TextField(PARM_DEV_EQUIP_TYPE   , _uiEdit    , i18n.getString("DeviceInfo.equipmentType","Equipment Type") +":"    , (_selDev!=null)?_selDev.getEquipmentType():""  , 30, 40));
                     //out.println(FormRow_TextField(PARM_DEV_IMEI         , _uiEdit    , i18n.getString("DeviceInfo.imeiNumber","IMEI/ESN Number") +":"      , (_selDev!=null)?_selDev.getImeiNumber():""     , 16, 18));
-		    out.println(FormRow_TextField(PARM_IP_ADDRESS_CURRENT,_uiEdit    , i18n.getString("DeviceInfo.ipAddressCurrent","Current IP Address") +":",(_selDev!=null)?(String)_selDev.getIpAddressCurrent().getObject():"",16,18));
+					out.println(FormRow_TextField(PARM_IP_ADDRESS_CURRENT,_uiEdit    , i18n.getString("DeviceInfo.ipAddressCurrent","Current IP Address") +":",(_selDev!=null)?(String)_selDev.getIpAddressCurrent().getObject():"",16,18));
+					long jobNumV = (_selDev != null)? _selDev.getJobNumber() : 0;
+					String jobNumStr = StringTools.format(jobNumV,"0");
+					out.println(FormRow_TextField(PARM_JOB_NUMBER,_uiEdit,i18n.getString("DeviceInfo.jobNumber","CRM Job Number") +":",(_selDev!=null)?jobNumStr:"0",16,18));
                     if (dataKeyOK) {
                     out.println(FormRow_TextField(PARM_DATA_KEY         , _uiEdit    , i18n.getString("DeviceInfo.dataKey","Data Key") +":"                , (_selDev!=null)?_selDev.getDataKey():""        , 60, 200));
                     }

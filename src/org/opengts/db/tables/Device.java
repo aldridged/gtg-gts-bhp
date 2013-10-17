@@ -885,6 +885,20 @@ public class Device // Asset
     }
 
     // ------------------------------------------------------------------------
+	/* Get Job Number Field */
+	public long getJobNumber()
+    {
+        Long v = (Long)this.getFieldValue(FLD_jobNumber);
+        return (v != null)? v.longValue() : 0L;
+    }
+
+    /* Set Job Number Field */
+    public void setJobNumber(long v)
+    {
+        this.setFieldValue(FLD_jobNumber, v);
+    }
+	
+	// ------------------------------------------------------------------------
 
     public static boolean supportsLinkURL()
     {
