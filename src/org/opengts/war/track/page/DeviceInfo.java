@@ -1619,7 +1619,7 @@ public class DeviceInfo
                     out.write("<span style='margin-left:4px; margin-top:10px; font-weight:bold;'>");
                     out.write(  i18n.getString("DeviceInfo.groupMembership","{0} Membership:",grpTitles));
                     out.write(  "</span>\n");
-                    out.write("<div style='border: 1px solid black; margin: 2px 20px 5px 10px; height:80px; width:400px; overflow-x: hidden; overflow-y: scroll;'>\n");
+                    out.write("<div style='border: 1px solid black; margin: 2px 20px 5px 10px; height:200px; width:600px; overflow-x: hidden; overflow-y: scroll;'>\n");
                     out.write("<table>\n");
                     final OrderedSet<String> grpList = reqState.getDeviceGroupIDList(true);
                     for (int g = 0; g < grpList.size(); g++) {
