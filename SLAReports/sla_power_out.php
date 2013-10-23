@@ -1,6 +1,9 @@
 <?php
 // Check all devices looking for poweroff holes
 
+// Load required classes for email
+require_once('Classes/class.phpmailer.php');
+
 // Connect to GTS Database
 $link = mysql_connect('localhost','root','d@t@c0m#');
 if (!$link) {
@@ -55,6 +58,7 @@ while ($ar = mysql_fetch_array($res, MYSQL_BOTH)) {
 	} else if ($curup > $prevup) {
 	  // Abnormal condition uptime is ascending indicates reboot
 	  $update_query[$index] = "update EventData set rawData='Latency:".$prevlat." Packet Loss:".$prevpl."% Public IP:".$prevpubip." Uptime:".$prevup."' where deviceID='".$ar['deviceID']."' and timestamp < ".$prevts." and timestamp > ".$curts.";";
+	  $english_update[$index] = "Setting latency to ".$prevlat.", packet loss to ".$prevpl."%, public IP to ".$prevpubip." and uptime to ".$prevup." for ".$ar['deviceID']." from ".date('m/d/Y H:i',$prevts)." to ".date('m/d/Y H:i',$curts).".<br>"; 
 	  $index++;
 	  $prevts = $curts;
 	  $prevlat = $curlat;
@@ -66,4 +70,5 @@ while ($ar = mysql_fetch_array($res, MYSQL_BOTH)) {
   };
   
   print_r($update_query);
+  print_r($english_update);
   ?>
