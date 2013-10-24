@@ -36,7 +36,7 @@ while ($ar = mysql_fetch_array($res, MYSQL_BOTH)) {
   $prevpl = $ic['PacketLoss'];
   $prevup = $ic['Uptime'];
   $prevpubip = $ic['PublicIP'];
-  
+	
   // Loop through events for devices
   while ($ar2 = mysql_fetch_array($res2, MYSQL_BOTH)) {
     $curts = $ar2['timestamp'];
@@ -55,11 +55,17 @@ while ($ar = mysql_fetch_array($res, MYSQL_BOTH)) {
 	  $prevpl = $curpl;
 	  $prevup = $curup;
 	  $prevpubip = $curpubip;
-	} else if ($curup > $prevup) {
-	  // Abnormal condition uptime is ascending indicates reboot
+	} else if (($curup > $prevup)&&(($prevts-$curts)>700)) {
+	  // Abnormal condition uptime is ascending indicates reboot, with a >11 minute difference in time
 	  $update_query[$index] = "update EventData set rawData='Latency:".$prevlat." Packet Loss:".$prevpl."% Public IP:".$prevpubip." Uptime:".$prevup."' where deviceID='".$ar['deviceID']."' and timestamp < ".$prevts." and timestamp > ".$curts.";";
 	  $english_update[$index] = "Setting latency to ".$prevlat.", packet loss to ".$prevpl."%, public IP to ".$prevpubip." and uptime to ".$prevup." for ".$ar['deviceID']." from ".date('m/d/Y H:i',$prevts)." to ".date('m/d/Y H:i',$curts).".<br>"; 
 	  $index++;
+	  $prevts = $curts;
+	  $prevlat = $curlat;
+	  $prevpl = $curpl;
+	  $prevup = $curup;
+	  $prevpubip = $curpubip;
+	} else {
 	  $prevts = $curts;
 	  $prevlat = $curlat;
 	  $prevpl = $curpl;
@@ -69,6 +75,25 @@ while ($ar = mysql_fetch_array($res, MYSQL_BOTH)) {
 	};
   };
   
-  print_r($update_query);
-  print_r($english_update);
-  ?>
+//If we have output, then apply the updates
+if (isset($update_query)) {
+  foreach($update_query as $query) {
+    $res = mysql_query($query);
+	};
+  };
+  
+//and email english version to BHP Team
+if (isset($english_update)) {
+  foreach($english_query as $query) {
+    $updates .= $query;
+	};
+  $mail = new PHPMailer();
+  $mail->IsSendmail();
+  $mail->AddAddress('bhpteam@globalgroup.us', 'BHP Team');
+  $mail->SetFrom('reports@dcportal.mydatacom.com', 'DC Portal Reports');
+  $mail->Subject = 'SLA Modification Report';
+  $mail->AltBody = 'The SLA modification routine made changes to the recorded stats to fill in suspected power outages:\n'.str_replace("<br>","\n",$updates);
+  $mail->Body = 'The SLA modification routine made changes to the recorded stats to fill in suspected power outages:<br>'.$updates;
+  $mail->Send();
+  };
+?>
