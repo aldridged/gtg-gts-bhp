@@ -27,6 +27,11 @@ function mtStatusPing($host) {
   if ($API->connect($host, 'admin', 'DataCom')) {
     $API->write('/interface/sstp-client/print');
     $TARGET = $API->read();
+    if(empty($TARGET)) {
+      $API->write('/interface/l2tp-client/print');
+      $TARGET = $API->read();
+      $TARGET[0]['connect-to'].=":0";
+      };
     $tunuser = $TARGET[0]['user'];
     $pingtargarr = explode(':',$TARGET[0]['connect-to']);
     $pingtarg = $pingtargarr[0];
