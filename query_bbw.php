@@ -87,7 +87,7 @@ function ExtractUptime($latuptime) {
 
 // Function to get availability over period samples
 function Avail($devid,$period) {
-  $res = mysql_query("select ROUND(AVG(x.AV),2) as AV2 from (select 100-(substring(rawData,locate(':',rawData,10)+1,(locate('%',rawData)-locate(':',rawData,10)-1))) as AV from EventData where accountID='gtg' and deviceID='".$devid."' and rawData is not null order by timestamp DESC limit ".$period.") as x;");
+  $res = mysql_query("select ROUND(AVG(x.AV),2) as AV2 from (select 100-IF((substring(rawData,locate(':',rawData,10)+1,(locate('%',rawData)-locate(':',rawData,10)-1)))<100,0,100) as AV from EventData where accountID='gtg' and deviceID='".$devid."' and rawData is not null order by timestamp DESC limit ".$period.") as x;");
 
   if (!$res) {
     die("Error cannot get availability information");
