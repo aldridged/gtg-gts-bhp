@@ -35,10 +35,10 @@ function mtStatusPing($host) {
     $tunuser = $TARGET[0]['user'];
     $pingtargarr = explode(':',$TARGET[0]['connect-to']);
     $pingtarg = $pingtargarr[0];
-    $API->write('/ping',false);
-    $API->write('=address='.$pingtarg,false);
-    $API->write('=count=10');
-    $ARRAY = $API->read();
+    //$API->write('/ping',false);
+    //$API->write('=address='.$pingtarg,false);
+    //$API->write('=count=10');
+    //$ARRAY = $API->read();
     $API->disconnect();
     };
   
@@ -53,13 +53,16 @@ function mtStatusPing($host) {
     $API->disconnect();
     };
   
+  // Query SW for current stats
+  $res = mssql_query("select [RTD].NodeID, [Nodes].IP_Address, [RTD].DateTime, [RTD].MinResponseTime-20 as RTT, [RTD].PercentLoss from ResponseTime_Detail as RTD left join Nodes on [Nodes].NodeID=[RTD].NodeID where IP_Address='".$host."' and DateTime = (select max(DateTime) from ResponseTime_Detail where NodeID=[RTD].NodeID);");
+  $ar = mssql_fetch_array($res);
+  
   // Output results
-  $depth = count($ARRAY)-1;
-  $avgpingtime = convertms($ARRAY[$depth]['avg-rtt']);
-  $packetloss = $ARRAY[$depth]['packet-loss'];
+  $avgpingtime = $ar['RTT'];
+  $packetloss = $ar['PercentLoss'];
   
   // Handle failed connects
-  if(!isset($ARRAY)) {
+  if(!isset($ar)) {
     $avgpingtime = 0;
     $packetloss = 100;
     };
@@ -86,6 +89,7 @@ function ExtractUptime($latuptime) {
   }
 
 // Function to get availability over period samples
+/* MySQL version
 function Avail($devid,$period) {
   $res = mysql_query("select ROUND(AVG(x.AV),2) as AV2 from (select 100-IF((substring(rawData,locate(':',rawData,10)+1,(locate('%',rawData)-locate(':',rawData,10)-1)))<100,0,100) as AV from EventData where accountID='gtg' and deviceID='".$devid."' and rawData is not null order by timestamp DESC limit ".$period.") as x;");
 
@@ -96,8 +100,19 @@ function Avail($devid,$period) {
   $ar = mysql_fetch_array($res, MYSQL_BOTH);
   return($ar['AV2']);
   };
-  
+*/
+function Avail($devip,$period) {
+	$res = mssql_query("select ROUND(AVG(Availability),4) as AverageAvail from (select TOP ".$period." [RTD].Availability from ResponseTime_Hourly as RTD left join Nodes on [Nodes].NodeID=[RTD].NodeID where IP_Address='".$devip."' order by DateTime desc) as alist;");
+	if (!$res) {
+		die("Error cannot get availability information");
+	};
+
+	$ar = mssql_fetch_array($res);
+	return($ar['AverageAvail']);
+	};
+	
 // Function to get latency over period samples
+/* MySQL version
 function Latency($devid,$period) {
   $res = mysql_query("select ROUND(AVG(x.LT),2) as LT2 from (select substring(rawData,locate(':',rawData)+1,(locate(' ',rawData)-locate(':',rawData)-1)) as LT from EventData where accountID='gtg' and deviceID='".$devid."' and rawData is not null order by timestamp DESC limit ".$period.") as x;");
 
@@ -108,7 +123,17 @@ function Latency($devid,$period) {
   $ar = mysql_fetch_array($res, MYSQL_BOTH);
   return($ar['LT2']);
   };
+*/
+function Latency($devip,$period) {
+	$res = mssql_query("select ROUND(AVG(MRT),4) as AverageRTT from (select TOP ".$period." [RTD].MinResponseTime-20 as MRT from ResponseTime_Hourly as RTD left join Nodes on [Nodes].NodeID=[RTD].NodeID where IP_Address='".$devip."' order by DateTime desc) as alist;");
+	if (!$res) {
+		die("Error cannot get latency information");
+	};
 
+	$ar = mssql_fetch_array($res);
+	return($ar['AverageRTT']);
+	};
+	
 // Function to handle ping
 function ping($host, $timeout = 1) {
   $package = "\x08\x00\x7d\x4b\x00\x00\x00\x00PingHost";
@@ -215,6 +240,14 @@ function mtPublicIP($host) {
   return($ipaddr);
 };
 
+//connection to the database
+$dbhandle = mssql_connect("solarwinds.mydatacom.com", "bhpportal", "DataCom!")
+  or die("Couldn't connect to SQL Server on solarwinds");
+
+//select a database to work with
+$selected = mssql_select_db("DC_Network", $dbhandle)
+  or die("Couldn't open database DC_Network");
+
 // Connect to GTS Database
 $link = mysql_connect('localhost','root','d@t@c0m#');
 if (!$link) {
@@ -245,12 +278,12 @@ while ($ar = mysql_fetch_array($res, MYSQL_BOTH)) {
   list($curstat,$latency,$pl,$pubip) = mtStatusPing($ar['ipAddressCurrent']);
   list($uptime,$rawuptime) = mtUptime($ar['ipAddressCurrent']);
   if($ar['ipAddressCurrent']=='0.0.0.0') $curstat=39999;
-  $avail24h = Avail($ar['deviceID'],144);
-  $avail7d = Avail($ar['deviceID'],1008);
-  $avail30d = Avail($ar['deviceID'],4320);
-  $latency24h = Latency($ar['deviceID'],144);
-  $latency7d = Latency($ar['deviceID'],1008);
-  $latency30d = Latency($ar['deviceID'],4320);
+  $avail24h = Avail($ar['ipAddressCurrent'],24);
+  $avail7d = Avail($ar['ipAddressCurrent'],168);
+  $avail30d = Avail($ar['ipAddressCurrent'],720);
+  $latency24h = Latency($ar['ipAddressCurrent'],24);
+  $latency7d = Latency($ar['ipAddressCurrent'],168);
+  $latency30d = Latency($ar['ipAddressCurrent'],720);
   $insertquery[$index] = "REPLACE INTO EventData SET accountID='gtg',deviceID='".$ar['deviceID']."',timestamp=".time().",statusCode=".$curstat.",rawData='Latency:".$latency." Packet Loss:".$pl."% Public IP:".$pubip." Uptime:".$uptime."';";
   $index++;
   $insertquery[$index] = "UPDATE Device SET lastInputState=".$curstat.",lastRtt=".$latency.",notes='<br>24 Hour Availability: ".$avail24h."%<br>7 Day Availability: ".$avail7d."%<br>30 Day Availability: ".$avail30d."%<br>Packet Loss: ".$pl."%<br>24 Hour Latency: ".$latency24h." ms<br>7 Day Latency: ".$latency7d." ms<br>30 Day Latency: ".$latency30d." ms<br>Current Public IP: ".$pubip."<br>Uptime: ".$rawuptime."s<br>' WHERE deviceID='".$ar['deviceID']."';";
