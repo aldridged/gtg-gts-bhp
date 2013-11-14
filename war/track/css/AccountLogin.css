@@ -4,6 +4,8 @@
     margin-top: 50px;
     width: 350px;
     text-align: center;
+	margin-right: auto;
+	margin-left: auto;
 }
 .accountLoginCell { 
     padding: 10px; 
@@ -12,6 +14,8 @@
     background-color: #FBFBFB; 
     /* */
     text-align: center;
+	margin-right: auto;
+	margin-left: auto;
 }
 
 /* Login page */
@@ -27,8 +31,10 @@
 
 /* table containing vertical-separator (if any) and login text */
 TABLE.accountLoginContentTable {
-    width: 100%;
+    width: 350px;
     text-align: center; /* left; */
+	margin-right: auto;
+	margin-left: auto;
 }
 
 /* vertical separator (if any) */
@@ -39,8 +45,10 @@ TD.accountLoginVertSepCell {
 }
 
 TD.accountLoginTextCell {
-    width: 100%;
+    width: 350px;
     text-align: center; /* left; */
+	margin-right: auto;
+	margin-left: auto;
 }
 
 /* Login form table */
