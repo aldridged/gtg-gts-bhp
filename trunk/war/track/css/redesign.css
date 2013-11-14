@@ -1,0 +1,88 @@
+﻿BODY {
+
+    background: #1e5799; /* Old browsers */
+    background: -moz-linear-gradient(top,  #1e5799 0%, #7db9e8 100%); /* FF3.6+*/
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(100%,#7db9e8)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #1e5799 0%,#7db9e8 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #1e5799 0%,#7db9e8 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #1e5799 0%,#7db9e8 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #1e5799 0%,#7db9e8 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
+
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    font-size: 8pt;
+    font-family: verdana,sans-serif;
+}
+
+#menu{
+width:1024px;
+height:29px;
+clear:both;
+margin:auto;
+padding:0px;
+background:navy;
+}
+#menu ul{
+list-style:none;padding:0 0 0 30px;margin:0px;display:block;
+}
+#menu ul li{
+list-style:none;display:inline;float:left;width:auto;padding:0px; font-size:12px; line-height:29px; 
+}
+#menu ul li a{
+float:left;text-decoration:none;padding:0px 20px 0 20px; margin:0px;color:#fff;text-align:center;
+}
+#menu ul li a:hover{
+text-decoration:none;color: #fff; background:blue;padding:0px 20px 0 20px;
+}
+#menu ul li a.current{
+float:left;text-decoration:none;background:blue;padding:0px 20px 0 20px;color: #fff;margin:0px;
+}
+/*--- DROPDOWN ---*/
+#menu ul ul{
+	background:navy; 
+	background:rgba(255,255,255,0);
+	list-style:none;
+	float:none;
+	position:absolute;
+	margin:0px 0px 0px -25px;
+	display:none; 
+}
+#menu ul ul li{
+	padding-top:1px; 
+	float:none;
+	display:block;
+	z-index:10;
+}
+#menu ul ul a{
+	display:block;
+	float:none;
+	white-space:nowrap; 
+}
+#menu ul li:hover ul{ 
+	display:block;
+	float:none;
+	z-index:10;
+}
+#menu ul li:hover a{ 
+	background:blue;
+	text-decoration:underline;
+	display:block;
+	float:none;
+	z-index:10;
+}
+#menu ul li:hover ul a{ 
+	background:navy;
+	text-decoration:none;
+	float:none;
+	display:block;
+	z-index:10;
+}
+#menu ul li:hover ul li a:hover{ 
+	background:blue;
+	display:block;
+	float:none;
+	z-index:10;
+}
