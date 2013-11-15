@@ -43,7 +43,7 @@ function mtStatusPing($host) {
     };
   
   // Query Tunnel End point for real public ip
-  if ($API->connect($pingtarg, 'admin', 'D@t@c0m#')) {
+  if ($API->connect($pingtarg, 'admin', 'd@t@c0m!')) {
     $API->write('/ppp/active/print');
     $TUNNELS = $API->read();
     $pubip = '0.0.0.0';
@@ -101,8 +101,8 @@ function Avail($devid,$period) {
   return($ar['AV2']);
   };
 */
-function Avail($devip,$period) {
-	$res = mssql_query("select ROUND(AVG(Availability),4) as AverageAvail from (select TOP ".$period." [RTD].Availability from ResponseTime_Hourly as RTD left join Nodes on [Nodes].NodeID=[RTD].NodeID where IP_Address='".$devip."' order by DateTime desc) as alist;");
+function Avail($devip,$periodstart) {
+	$res = mssql_query("select ROUND(AVG(Availability),4) as AverageAvail from (select [RTD].Availability from ResponseTime_Detail as RTD left join Nodes on [Nodes].NodeID=[RTD].NodeID where IP_Address='".$devip."' and DateTime >= '".$periodstart."' and Archive=0) as alist;");
 	if (!$res) {
 		die("Error cannot get availability information");
 	};
@@ -124,8 +124,8 @@ function Latency($devid,$period) {
   return($ar['LT2']);
   };
 */
-function Latency($devip,$period) {
-	$res = mssql_query("select ROUND(AVG(MRT),4) as AverageRTT from (select TOP ".$period." [RTD].MinResponseTime-20 as MRT from ResponseTime_Hourly as RTD left join Nodes on [Nodes].NodeID=[RTD].NodeID where IP_Address='".$devip."' order by DateTime desc) as alist;");
+function Latency($devip,$periodstart) {
+	$res = mssql_query("select ROUND(AVG(MRT),4) as AverageRTT from (select [RTD].MinResponseTime-20 as MRT from ResponseTime_Detail as RTD left join Nodes on [Nodes].NodeID=[RTD].NodeID where IP_Address='".$devip."' and DateTime >= '".$periodstart."' and Archive=0) as alist;");
 	if (!$res) {
 		die("Error cannot get latency information");
 	};
@@ -278,12 +278,15 @@ while ($ar = mysql_fetch_array($res, MYSQL_BOTH)) {
   list($curstat,$latency,$pl,$pubip) = mtStatusPing($ar['ipAddressCurrent']);
   list($uptime,$rawuptime) = mtUptime($ar['ipAddressCurrent']);
   if($ar['ipAddressCurrent']=='0.0.0.0') $curstat=39999;
-  $avail24h = Avail($ar['ipAddressCurrent'],24);
-  $avail7d = Avail($ar['ipAddressCurrent'],168);
-  $avail30d = Avail($ar['ipAddressCurrent'],720);
-  $latency24h = Latency($ar['ipAddressCurrent'],24);
-  $latency7d = Latency($ar['ipAddressCurrent'],168);
-  $latency30d = Latency($ar['ipAddressCurrent'],720);
+  $date24h = date("Y-m-d H:i:s",(time() - (24 * 60 * 60)));
+  $date7d = date("Y-m-d H:i:s",(time() - (7 * 24 * 60 * 60)));
+  $date30d = date("Y-m-d H:i:s",(time() - (30 * 24 * 60 * 60)));
+  $avail24h = Avail($ar['ipAddressCurrent'],$date24h);
+  $avail7d = Avail($ar['ipAddressCurrent'],$date7d);
+  $avail30d = Avail($ar['ipAddressCurrent'],$date30d);
+  $latency24h = Latency($ar['ipAddressCurrent'],$date24h);
+  $latency7d = Latency($ar['ipAddressCurrent'],$date7d);
+  $latency30d = Latency($ar['ipAddressCurrent'],$date30d);
   $insertquery[$index] = "REPLACE INTO EventData SET accountID='gtg',deviceID='".$ar['deviceID']."',timestamp=".time().",statusCode=".$curstat.",rawData='Latency:".$latency." Packet Loss:".$pl."% Public IP:".$pubip." Uptime:".$uptime."';";
   $index++;
   $insertquery[$index] = "UPDATE Device SET lastInputState=".$curstat.",lastRtt=".$latency.",notes='<br>24 Hour Availability: ".$avail24h."%<br>7 Day Availability: ".$avail7d."%<br>30 Day Availability: ".$avail30d."%<br>Packet Loss: ".$pl."%<br>24 Hour Latency: ".$latency24h." ms<br>7 Day Latency: ".$latency7d." ms<br>30 Day Latency: ".$latency30d." ms<br>Current Public IP: ".$pubip."<br>Uptime: ".$rawuptime."s<br>' WHERE deviceID='".$ar['deviceID']."';";
