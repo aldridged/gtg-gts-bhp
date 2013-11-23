@@ -904,13 +904,14 @@ public abstract class MapProviderAdapter
         int mapH = (md != null)? md.getHeight() : -1;
         String tableStyle = "width:100%;" + ((mapH < 0)? " height:100%;" : "");
         String cellStyle  = "width:100%; border:1px solid black; padding:0px; margin:0px;" + ((mapH < 0)? " height:100%;" : "");
-        String divStyle   = this.getMapCellStyle(reqState, mapDim);
+        //String divStyle   = this.getMapCellStyle(reqState, mapDim);
+		String divStyle = "float:left; background:white; width:824px; height:500px; margin:10px 0px 10px 0px;";
         String mapID      = this.getMapID();
-        out.println("<table valign='center' align='center' cellspacing='0' cellpadding='0' border='0' style='" + tableStyle + "'>");
-        out.println("<tr><td align='center' style='" + cellStyle + "'>");
+        //out.println("<table valign='center' align='center' cellspacing='0' cellpadding='0' border='0' style='" + tableStyle + "'>");
+        //out.println("<tr><td align='center' style='" + cellStyle + "'>");
         out.println("<div id='" + mapID + "' style='" + divStyle + "'></div>");
-        out.println("</td></tr>");
-        out.println("</table>");
+        //out.println("</td></tr>");
+        //out.println("</table>");
     }
 
     // ------------------------------------------------------------------------
