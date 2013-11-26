@@ -655,7 +655,7 @@ JSMap.prototype._addPushpin = function(pp)
             pp.shadowSize? jsNewGSize(pp.shadowSize[0],pp.shadowSize[1])  : null,   // shadowSize
             jsNewGPoint(5, 1),                                                      // infoWindowAnchor
             false);                                                                 // draggable
-        GEvent.addListener(marker, 'click', function() { marker.openInfoWindowHtml(pp.html); });
+        GEvent.addListener(marker, 'mouseover', function() { marker.openInfoWindowHtml(pp.html); });
         this.gmapGoogleMap.addOverlay(marker);
         pp.marker = marker;
 
