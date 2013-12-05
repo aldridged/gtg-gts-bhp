@@ -87,8 +87,11 @@ response.setDateHeader("EXPIRES"  , 0         );
 
 <body onload="<gts:track section='body.onload'/>" onunload="<gts:track section='body.onunload'/>">
 <div id="container" style="width:1024px; height:750px; margin-left:auto; margin-right:auto;">
+	<gts:var ifKey="isLoggedIn" value="false">
+	<div id="spacer" style="height:50px;">&nbsp;</div>
+	</gts:var>
+	<gts:var ifKey="isLoggedIn" value="true">
 	<div id="menu">
-		<gts:var ifKey="isLoggedIn" value="true">
 	    <ul>
     	<li><a href="Track?page=map.fleet">Map</a></li>
     	<li><a href="#">Reports</a>
@@ -108,17 +111,21 @@ response.setDateHeader("EXPIRES"  , 0         );
 		</li>
     	<li><a href="Track?page=login">Logout</a></li>
 		</ul>
-		</gts:var>
 	</div>
+	</gts:var>
     <div id="content_container" style="margin-left:auto;margin-right:auto;">
 		<gts:track section="content.body"/>
     </div>
 	<div id="message_container" style="margin-left:auto;margin-right:auto;">
+		<center>
 		<gts:track section="content.message"/>
+		</center>
 	</div>
+	<gts:var ifKey="isLoggedIn" value="true">
 	 <div id="footer" style="width:1024px; height:20px; background:navy; color:white;">
-		<gts:var ifKey="isLoggedIn" value="true"><i>${i18n.Account}:</i> ${accountDesc} (${userDesc})</gts:var>
+		<i>${i18n.Account}:</i> ${accountDesc} (${userDesc})
 	 </div>
+	 </gts:var>
 </div>
 </body>
 
