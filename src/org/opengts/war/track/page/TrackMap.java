@@ -944,6 +944,36 @@ public abstract class TrackMap
                 //out.println("<td colspan='"+colspan+"' style='width:100%; height:16px; padding:0px 0px 5px 0px;'>");
                 //out.println("<table border='0' cellspacing='0' cellpadding='0' style='width:100%;'><tbody><tr>"); // [
 				out.println("\n<div id='explorer' style='float:left; background:gray; width:190px; height:500px; margin:10px 10px 10px 0px;'>");
+				
+				/* Write jstree selector script */
+				out.write("<script type='text/javascript'>\n");
+				out.write("  $(function () {\n");
+				out.write("    $('#explorer')\n");
+				out.write("      .jstree({\n");
+				out.write("        'plugins' : ['themes','html_data','ui','crrm','hotkeys'],\n");
+				out.write("        'core' : { 'initially_open' : [ 'phtml_1' ] } } )\n");
+				out.write("      .bind('loaded.jstree', function (event, data) { } );\n");
+				out.write("    $('#explorer').bind('open_node.jstree', function (e, data) {\n");
+				out.write("      data.inst.select_node('#phtml_2', true); } );\n");
+				out.write("  });\n");
+				out.write("</script>\n");
+
+				/* Write jstree selector data */
+				out.write("<ul>\n");
+				OrderedSet<String> groupList = reqState.getDeviceGroupIDList(true);
+				java.util.List<IDDescription> sortedList = new Vector<IDDescription>();
+				for (String id : groupList) {
+					String desc = reqState.getDeviceGroupDescription(id,true);
+					sortedList.add(new IDDescription(id,desc));
+					};
+				IDDescription.SortList(sortedList, IDDescription.SortBy.DESCRIPTION);
+				for (IDDescription dd : sortedList) {
+					String id   = dd.getID();
+					String desc = dd.getDescription();
+					out.println("<li id='phtml_"+id+"'><a href='#' onclick='javascript:deviceSelected("+id+")'>"+desc+"</a></li>");
+					};
+				out.write("</ul>\n");
+				out.write("<hr>\n");
 
                 // Device/Group selection
                 //out.println("<td nowrap align='left' style='font-size:9pt; height:19px;'>");
