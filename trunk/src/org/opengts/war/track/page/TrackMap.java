@@ -929,6 +929,23 @@ public abstract class TrackMap
                 out.println("  <input type='hidden' name='"+Calendar.PARM_TIMEZONE +"' value=''/>");
                 out.println("</form>");
                 out.println("\n");
+				
+				//Device chooser form
+				
+				//out.println("<div id='hiddenform' class='devSelectorDiv_hidden'>");
+				String selId2 = isFleet? reqState.getSelectedDeviceGroupID() : reqState.getSelectedDeviceID();
+                String parmDevGrp2 = isFleet? PARM_GROUP : PARM_DEVICE;
+				out.println("<form id='"+FORM_SELECT_DEVICE+"' name='"+FORM_SELECT_DEVICE+"' method='post' target='_self'>"); // target='_top'
+                out.println("<input type='hidden' name='"+PARM_PAGE              +"' value='" + FilterValue(pageName) + "'/>");
+                out.println("<input type='hidden' name='"+Calendar.PARM_RANGE_FR +"' value=''/>");
+                out.println("<input type='hidden' name='"+Calendar.PARM_RANGE_TO +"' value=''/>");
+                out.println("<input type='hidden' name='"+Calendar.PARM_TIMEZONE +"' value=''/>");
+				String selDesc2 = FilterValue(isFleet?reqState.getDeviceGroupDescription(selId2,false):reqState.getDeviceDescription(selId2,false));
+                out.println("<input id='"+ID_DEVICE_ID   +"' name='"+parmDevGrp2     +"' type='hidden' value='"+selId2+"'>");
+                out.println("<input id='"+ID_DEVICE_DESCR+"' name='"+ID_DEVICE_DESCR+"' type='hidden' value='"+selDesc2+"' >");
+				out.println("</form>");
+				//out.println("</div>");
+				
 
                 // start of map/date table (2 columns)
                 //String tableStyle = "width:100%;" + (mapAutoSize?" height:100%;":"");
@@ -970,18 +987,18 @@ public abstract class TrackMap
 				for (IDDescription dd : sortedList) {
 					String id   = dd.getID();
 					String desc = dd.getDescription();
-					out.println("<li id='phtml_"+id+"'><a href='#' onclick='javascript:deviceSelected("+id+")'>"+desc+"</a></li>");
+					out.println("<li id='phtml_"+id+"'><a href='#' onmousedown=\"javascript:deviceTreeSelected('"+id+"','"+desc+"')\">"+desc+"</a></li>");
 					};
 				out.write("</ul>\n");
-				out.write("<hr>\n");
+				//out.write("<hr>\n");
 
                 // Device/Group selection
                 //out.println("<td nowrap align='left' style='font-size:9pt; height:19px;'>");
-                out.println("<form id='"+FORM_SELECT_DEVICE+"' name='"+FORM_SELECT_DEVICE+"' method='post' target='_self'>"); // target='_top'
-                out.println("<input type='hidden' name='"+PARM_PAGE              +"' value='" + FilterValue(pageName) + "'/>");
-                out.println("<input type='hidden' name='"+Calendar.PARM_RANGE_FR +"' value=''/>");
-                out.println("<input type='hidden' name='"+Calendar.PARM_RANGE_TO +"' value=''/>");
-                out.println("<input type='hidden' name='"+Calendar.PARM_TIMEZONE +"' value=''/>");
+                //out.println("<form id='"+FORM_SELECT_DEVICE+"' name='"+FORM_SELECT_DEVICE+"' method='post' target='_self'>"); // target='_top'
+                //out.println("<input type='hidden' name='"+PARM_PAGE              +"' value='" + FilterValue(pageName) + "'/>");
+                //out.println("<input type='hidden' name='"+Calendar.PARM_RANGE_FR +"' value=''/>");
+                //out.println("<input type='hidden' name='"+Calendar.PARM_RANGE_TO +"' value=''/>");
+                //out.println("<input type='hidden' name='"+Calendar.PARM_TIMEZONE +"' value=''/>");
                 //out.write("<table cellspacing='0' cellpadding='0' border='0'><tr>\n"); // [
                 String mapTypeTitle = TrackMap.this.getProperties().getString(PROP_mapTypeTitle,null);
                 if (StringTools.isBlank(mapTypeTitle)) {
@@ -1000,22 +1017,22 @@ public abstract class TrackMap
                     switch (sortBy) {
                         case DESCRIPTION : {
                             String selDesc = FilterValue(isFleet?reqState.getDeviceGroupDescription(selId,false):reqState.getDeviceDescription(selId,false));
-                            out.write("<input id='"+ID_DEVICE_ID   +"' name='"+parmDevGrp     +"' type='hidden' value='"+selId+"'>");
-                            out.write("<input id='"+ID_DEVICE_DESCR+"' name='"+ID_DEVICE_DESCR+"' type='text' value='"+selDesc+"' readonly size='20' style='"+chooserStyle+"' onclick=\""+chooserOnclick+"\">");
+                            //out.write("<input id='"+ID_DEVICE_ID   +"' name='"+parmDevGrp     +"' type='hidden' value='"+selId+"'>");
+                            //out.write("<input id='"+ID_DEVICE_DESCR+"' name='"+ID_DEVICE_DESCR+"' type='text' value='"+selDesc+"' readonly size='20' style='"+chooserStyle+"' onclick=\""+chooserOnclick+"\">");
                             } break;
                         case NAME : {
                             String selName = FilterValue(isFleet?reqState.getDeviceGroupDescription(selId,true ):reqState.getDeviceDescription(selId,true ));
-                            out.write("<input id='"+ID_DEVICE_ID   +"' name='"+parmDevGrp     +"' type='hidden' value='"+selId+"'>");
-                            out.write("<input id='"+ID_DEVICE_DESCR+"' name='"+ID_DEVICE_DESCR+"' type='text' value='"+selName+"' readonly size='20' style='"+chooserStyle+"' onclick=\""+chooserOnclick+"\">");
+                            //out.write("<input id='"+ID_DEVICE_ID   +"' name='"+parmDevGrp     +"' type='hidden' value='"+selId+"'>");
+                            //out.write("<input id='"+ID_DEVICE_DESCR+"' name='"+ID_DEVICE_DESCR+"' type='text' value='"+selName+"' readonly size='20' style='"+chooserStyle+"' onclick=\""+chooserOnclick+"\">");
                             } break;
                         case ID :
                         default : {
-                            out.write("<input id='"+ID_DEVICE_ID   +"' name='"+parmDevGrp     +"' type='text' value='"+selId  +"' readonly size='14' style='"+chooserStyle+"' onclick=\""+chooserOnclick+"\">");
+                            //out.write("<input id='"+ID_DEVICE_ID   +"' name='"+parmDevGrp     +"' type='text' value='"+selId  +"' readonly size='14' style='"+chooserStyle+"' onclick=\""+chooserOnclick+"\">");
                             } break;
                     }
                     //out.write("</td>");
                     //out.write("<td><img src='images/Pulldown.png' height='17' style='cursor:pointer;' onclick='javascript:trackMapShowSelector()'></td>");
-                    out.write("<img src='images/Pulldown.png' height='17' style='cursor:pointer;' onclick='javascript:trackMapShowSelector()'>");
+                    //out.write("<img src='images/Pulldown.png' height='17' style='cursor:pointer;' onclick='javascript:trackMapShowSelector()'>");
 					//out.write("<td style='padding-left:12px;'>&nbsp;</td>");
                 } else {
                     OrderedSet<String> dgList = isFleet? reqState.getDeviceGroupIDList(true) : reqState.getDeviceIDList(false);
@@ -1524,7 +1541,22 @@ public abstract class TrackMap
 				out.println("    google.maps.event.trigger(jsmap, 'resize');\n");
 				out.println("  });\n");
 				out.println("</script>\n");
-
+				
+				//Device chooser form
+				/*
+				out.println("<div id='hiddenform' class='devSelectorDiv_hidden'>");
+				out.println("<form id='"+FORM_SELECT_DEVICE+"' name='"+FORM_SELECT_DEVICE+"' method='post' target='_self'>"); // target='_top'
+                out.println("<input type='hidden' name='"+PARM_PAGE              +"' value='" + FilterValue(pageName) + "'/>");
+                out.println("<input type='hidden' name='"+Calendar.PARM_RANGE_FR +"' value=''/>");
+                out.println("<input type='hidden' name='"+Calendar.PARM_RANGE_TO +"' value=''/>");
+                out.println("<input type='hidden' name='"+Calendar.PARM_TIMEZONE +"' value=''/>");
+				String selDesc2 = FilterValue(isFleet?reqState.getDeviceGroupDescription(selId,false):reqState.getDeviceDescription(selId,false));
+                out.println("<input id='"+ID_DEVICE_ID   +"' name='"+parmDevGrp     +"' type='hidden' value='"+selId+"'>");
+                out.println("<input id='"+ID_DEVICE_DESCR+"' name='"+ID_DEVICE_DESCR+"' type='hidden' value='"+selDesc2+"' >");
+				out.println("</form>");
+				out.println("</div>");
+				*/
+				
                 /* write DeviceChooser DIV */
                 if (DeviceChooser.isDeviceChooserUseTable(privLabel)) {
                     java.util.List<IDDescription> idList = reqState.createIDDescriptionList(isFleet, sortBy);
