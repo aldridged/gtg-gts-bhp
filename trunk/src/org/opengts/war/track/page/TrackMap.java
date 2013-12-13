@@ -970,6 +970,9 @@ public abstract class TrackMap
 				out.write("        'plugins' : ['themes','html_data','ui','crrm','hotkeys'],\n");
 				out.write("        'core' : { 'initially_open' : [ 'phtml_1' ] } } )\n");
 				out.write("      .bind('loaded.jstree', function (event, data) { } );\n");
+				out.write("	   $('#explorer').bind('select_node.jstree', function (event, data) {\n");
+				//out.write("       alert(data.rslt.obj.attr('id'));\n" );
+				out.write("       deviceTreeSelected(data.rslt.obj.attr('id'),data.rslt.obj.attr('id')); } );\n");
 				out.write("    $('#explorer').bind('open_node.jstree', function (e, data) {\n");
 				out.write("      data.inst.select_node('#phtml_2', true); } );\n");
 				out.write("  });\n");
@@ -987,7 +990,7 @@ public abstract class TrackMap
 				for (IDDescription dd : sortedList) {
 					String id   = dd.getID();
 					String desc = dd.getDescription();
-					out.println("<li id='phtml_"+id+"'><a href='#' onmousedown=\"javascript:deviceTreeSelected('"+id+"','"+desc+"')\">"+desc+"</a></li>");
+					out.println("<li id='"+id+"' ><a href='#'>"+desc+"</a></li>");
 					};
 				out.write("</ul>\n");
 				//out.write("<hr>\n");

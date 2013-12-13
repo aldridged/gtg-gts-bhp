@@ -467,3 +467,22 @@ function deviceSelected(x)
 }
 
 // ----------------------------------------------------------------------------
+
+function deviceTreeSelected(selID, selDesc)
+{
+    // set id
+	document.SelectDeviceForm.group.value = selID; 
+    
+    // set description
+    document.SelectDeviceForm.deviceDescription.value = selDesc;
+
+    /* device selected */
+    document.SelectDeviceForm.date_fr.value = mapCal_fr? mapCal_fr.getArgDateTime() : ""; // PARM_RANGE_FR
+    document.SelectDeviceForm.date_to.value = mapCal_to.getArgDateTime(); // PARM_RANGE_TO
+    document.SelectDeviceForm.date_tz.value = calGetTimeZone(); // PARM_TIMEZONE
+    document.SelectDeviceForm.submit();
+    
+}
+
+// ----------------------------------------------------------------------------
+
