@@ -23,7 +23,7 @@ if (!$res) {
 };
 
 /* Connect to CRM Portal */
-$result = RestCall('login',array('user_auth' => array('user_name' => 'Admin', 'password' => md5('D@t@c0m#'))));
+$result = RestCall('login',array('user_auth' => array('user_name' => 'Admin', 'password' => md5('d@t@c0m!'))));
 $session = $result['id'];
 
 /* Create Excel sheet in memory */

@@ -134,7 +134,7 @@ $objWriter->save('/tmp/SLA-Report.xlsx');
 /* Email it to the BHP group */
 $mail = new PHPMailer();
 $mail->IsSendmail();
-$mail->AddAddress('bhpteam@globalgroup.us', 'BHP Team');
+$mail->AddAddress('jacobm@globalgroup.us', 'Murphy, Jacob');
 $mail->SetFrom('reports@dcportal.mydatacom.com', 'DC Portal Reports');
 $mail->Subject = 'Weekly SLA Report';
 $mail->AltBody = 'Please find the BHP Weekly SLA Report Attached.';
