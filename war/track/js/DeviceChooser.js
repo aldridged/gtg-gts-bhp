@@ -470,6 +470,17 @@ function deviceSelected(x)
 
 function deviceTreeSelected(selID, selDesc)
 {
+	// Scan points list and see if this is a device
+	var dpt=jsvDetailPoints;
+	var foundDev=false;
+	for (var i=0; i<dpt.length; i++) {
+		var pt = jsvDetailAscending?dpt[i]:dpt[dpt.length-i-1];
+		if (pt.optDesc[0].toLowerCase()==selDesc.toLowerCase()) {
+			foundDev=true;
+			window.jsmShowDetailPushpin(pt.dsNdx,pt.ppNdx);
+			};
+		};
+		
     // set id
 	document.SelectDeviceForm.group.value = selID; 
     
@@ -480,7 +491,7 @@ function deviceTreeSelected(selID, selDesc)
     document.SelectDeviceForm.date_fr.value = mapCal_fr? mapCal_fr.getArgDateTime() : ""; // PARM_RANGE_FR
     document.SelectDeviceForm.date_to.value = mapCal_to.getArgDateTime(); // PARM_RANGE_TO
     document.SelectDeviceForm.date_tz.value = calGetTimeZone(); // PARM_TIMEZONE
-    document.SelectDeviceForm.submit();
+    if (!foundDev) { document.SelectDeviceForm.submit(); };  // If its not a device then submit
     
 }
 
