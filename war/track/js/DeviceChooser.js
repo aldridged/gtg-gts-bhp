@@ -481,7 +481,10 @@ function deviceTreeSelected(selID, selDesc)
 			};
 		};
 		
-    // set id
+    // Check for device with no points
+	if ((!foundDev)&&(selID.substring(0,3).toLowerCase()=="bbw")&&(selID.length>4)) { foundDev=true; alert("No Location Found"); };
+	
+	// set id
 	document.SelectDeviceForm.group.value = selID; 
     
     // set description
