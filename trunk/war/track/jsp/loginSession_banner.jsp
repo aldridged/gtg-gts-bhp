@@ -65,11 +65,9 @@ response.setDateHeader("EXPIRES"  , 0         );
   <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
   
   <!-- jtree -->
-  <script type="text/javascript" src="http://static.jstree.com/v.1.0pre/_docs/syntax/!script.js"></script>
-  <link rel="stylesheet" type="text/css" href="http://static.jstree.com/v.1.0pre/_docs/!style.css" />
-  <script type="text/javascript" src="http://static.jstree.com/v.1.0pre/jquery.cookie.js"></script>
-  <script type="text/javascript" src="http://static.jstree.com/v.1.0pre/jquery.hotkeys.js"></script>
-  <script type="text/javascript" src="http://static.jstree.com/v.1.0pre/jquery.jstree.js"></script>
+  <script type="text/javascript" src="/jstree/_lib/jquery.cookie.js"></script>
+  <script type="text/javascript" src="/jstree/_lib/jquery.hotkeys.js"></script>
+  <script type="text/javascript" src="/jstree/jquery.jstree.js"></script>
 
   <!-- javascript -->
   <script src="./js/utils.js" type="text/javascript"></script>
