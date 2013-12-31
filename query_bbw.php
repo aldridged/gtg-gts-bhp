@@ -74,6 +74,11 @@ function mtStatusPing($host) {
   else
     $status = 40000;
 
+  // Handle NULL ping time
+  if((!isset($avgpingtime))||($avgpingtime=="")) {
+    $avgpingtime = 0;
+    }; 
+
   return(array($status,$avgpingtime,$packetloss,$pubip));
 }
 
@@ -296,6 +301,8 @@ while ($ar = mysql_fetch_array($res, MYSQL_BOTH)) {
 // Perform Status and Location inserts
 foreach($insertquery as $querytext)
   {
+  // Added for debug
+  //echo "SQL:".$querytext."\n";
   $res = mysql_query($querytext);
   };
 
