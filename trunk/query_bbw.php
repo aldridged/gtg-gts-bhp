@@ -18,40 +18,12 @@ function convertms($resulttime) {
 function mtStatusPing($host) {
   // Default ping target
   $pingtarg = '199.87.117.108';
+  $pubip = '0.0.0.0';
+  $tunuser = "deflt";
 
   // Instanciate MT API call
   $API = new routeros_api();
   $API->debug = false;
-
-  // Query Mikrotik
-  if ($API->connect($host, 'admin', 'DataCom')) {
-    $API->write('/interface/sstp-client/print');
-    $TARGET = $API->read();
-    if(empty($TARGET)) {
-      $API->write('/interface/l2tp-client/print');
-      $TARGET = $API->read();
-      $TARGET[0]['connect-to'].=":0";
-      };
-    $tunuser = $TARGET[0]['user'];
-    $pingtargarr = explode(':',$TARGET[0]['connect-to']);
-    $pingtarg = $pingtargarr[0];
-    //$API->write('/ping',false);
-    //$API->write('=address='.$pingtarg,false);
-    //$API->write('=count=10');
-    //$ARRAY = $API->read();
-    $API->disconnect();
-    };
-  
-  // Query Tunnel End point for real public ip
-  if ($API->connect($pingtarg, 'admin', 'd@t@c0m!')) {
-    $API->write('/ppp/active/print');
-    $TUNNELS = $API->read();
-    $pubip = '0.0.0.0';
-    foreach($TUNNELS as $item) {
-      if($item['name']==$tunuser) $pubip = $item['caller-id'];
-    };
-    $API->disconnect();
-    };
   
   // Query SW for current stats
   $res = mssql_query("select [RTD].NodeID, [Nodes].IP_Address, [RTD].DateTime, [RTD].MinResponseTime-20 as RTT, [RTD].PercentLoss from ResponseTime_Detail as RTD left join Nodes on [Nodes].NodeID=[RTD].NodeID where IP_Address='".$host."' and DateTime = (select max(DateTime) from ResponseTime_Detail where NodeID=[RTD].NodeID);");
@@ -67,6 +39,35 @@ function mtStatusPing($host) {
     $packetloss = 100;
     };
 
+  // If we do not have 100% packet loss then query the mikrotiks
+  if ($packetloss!=100) {
+    // Query Mikrotik for tunnel end point
+    if ($API->connect($host, 'admin', 'DataCom')) {
+      $API->write('/interface/sstp-client/print');
+      $TARGET = $API->read();
+      if(empty($TARGET)) {
+        $API->write('/interface/l2tp-client/print');
+        $TARGET = $API->read();
+        $TARGET[0]['connect-to'].=":0";
+        };
+      $tunuser = $TARGET[0]['user'];
+      $pingtargarr = explode(':',$TARGET[0]['connect-to']);
+      $pingtarg = $pingtargarr[0];
+      $API->disconnect();
+      };
+  
+    // Query Tunnel End point for real public ip
+    if ($API->connect($pingtarg, 'admin', 'd@t@c0m!')) {
+      $API->write('/ppp/active/print');
+      $TUNNELS = $API->read();
+      foreach($TUNNELS as $item) {
+        if($item['name']==$tunuser) $pubip = $item['caller-id'];
+      };
+      $API->disconnect();
+      };
+	};
+  
+  // Set status based on packetloss and ping time
   if ($packetloss>50)
     $status = 40002;
   else if ($packetloss>20 || $avgpingtime>250)
@@ -271,6 +272,9 @@ if (!$res) {
   die("Error cannot select devices");
 };
 
+// Set default timezone
+date_default_timezone_set('America/Chicago');
+
 // Build Device Status Insert Array
 $index=0;
 
@@ -281,7 +285,7 @@ $index++;
 // Loop though devices getting status information and building inserts
 while ($ar = mysql_fetch_array($res, MYSQL_BOTH)) {
   list($curstat,$latency,$pl,$pubip) = mtStatusPing($ar['ipAddressCurrent']);
-  list($uptime,$rawuptime) = mtUptime($ar['ipAddressCurrent']);
+  if ($pl!=100) list($uptime,$rawuptime) = mtUptime($ar['ipAddressCurrent']);
   if($ar['ipAddressCurrent']=='0.0.0.0') $curstat=39999;
   $date24h = date("Y-m-d H:i:s",(time() - (24 * 60 * 60)));
   $date7d = date("Y-m-d H:i:s",(time() - (7 * 24 * 60 * 60)));
