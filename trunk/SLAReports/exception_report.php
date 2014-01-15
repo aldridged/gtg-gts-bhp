@@ -16,7 +16,7 @@ if (!mysql_select_db('gts')) {
   die("Cannot select GTS db");
 };
 
-$res = mysql_query("SELECT Device.deviceID,DeviceGroup.description,Device.displayName,Device.ipAddressCurrent,Device.jobNumber,Device.notes FROM Device,DeviceList,DeviceGroup WHERE Device.deviceID=DeviceList.deviceID AND DeviceList.groupID=DeviceGroup.groupID AND DeviceList.groupID in ('hainesville','blackhawk','eagleford','hawkville','permian') AND Device.isActive=1 AND Device.deviceID like 'BBW%' ORDER BY DeviceGroup.description,Device.displayName;");
+$res = mysql_query("SELECT Device.deviceID,DeviceGroup.description,Device.displayName,Device.ipAddressCurrent,Device.jobNumber,Device.notes FROM Device,DeviceList,DeviceGroup WHERE Device.deviceID=DeviceList.deviceID AND DeviceList.groupID=DeviceGroup.groupID AND DeviceList.groupID in ('haynesville','blackhawk','eagleford','hawkville','permian') AND Device.isActive=1 AND Device.deviceID like 'BBW%' ORDER BY DeviceGroup.description,Device.displayName;");
 
 if (!$res) {
   die("Error cannot select devices");
@@ -39,23 +39,25 @@ $excelreport->getProperties()->setCreator("Datacom LLC")
 
 $excelreport->setActiveSheetIndex(0)
 			->setCellValue('A2', 'PU')
-            ->setCellValue('B2', 'Device Name')
-            ->setCellValue('C2', 'Device IP Address')
-			->setCellValue('D2', 'Type')
-			->setCellValue('E2', 'Job Number')
-			->setCellValue('F2', 'Open Cases')
-            ->setCellValue('G2', '30 Day')
-			->setCellValue('H1', 'Availability (%)')
-            ->setCellValue('H2', '7 Day')
-			->setCellValue('I2', '1 Day')
-			->setCellValue('J2', '30 Day')
-			->setCellValue('K1', 'Latency (ms)')
-			->setCellValue('K2', '7 Day')
-			->setCellValue('L2', '1 Day')
-			->setCellValue('M2', '30 Day')
-			->setCellValue('N1', 'Packet Loss (%)')
-			->setCellValue('N2', '7 Day')
-			->setCellValue('O2', '1 Day');
+			->setCellValue('B2', 'Cause of Issue')
+			->setCellValue('C2', 'Solution')
+            ->setCellValue('D2', 'Device Name')
+            ->setCellValue('E2', 'Device IP Address')
+			->setCellValue('F2', 'Type')
+			->setCellValue('G2', 'Job Number')
+			->setCellValue('H2', 'Open Cases')
+            ->setCellValue('I2', '30 Day')
+			->setCellValue('J1', 'Availability (%)')
+            ->setCellValue('J2', '7 Day')
+			->setCellValue('K2', '1 Day')
+			->setCellValue('L2', '30 Day')
+			->setCellValue('M1', 'Latency (ms)')
+			->setCellValue('M2', '7 Day')
+			->setCellValue('N2', '1 Day')
+			->setCellValue('O2', '30 Day')
+			->setCellValue('P1', 'Packet Loss (%)')
+			->setCellValue('P2', '7 Day')
+			->setCellValue('Q2', '1 Day');
 			
 $excelreport->getActiveSheet()->setTitle('Datacom SLA Data');
 			
@@ -94,20 +96,20 @@ while ($ar = mysql_fetch_array($res, MYSQL_BOTH)) {
 		};
  
 		$excelreport->getActiveSheet()->setCellValue("A".$i,trim($ar['description']))
-					->setCellValue("B".$i,trim($ar['displayName']))
-					->setCellValue("C".$i,trim($ar['ipAddressCurrent']))
-					->setCellValue("D".$i,$type)
-					->setCellValue("E".$i,trim($ar['jobNumber']))
-					->setCellValue("F".$i,$numcases)
-					->setCellValue("G".$i,trim($Avail30d))
-					->setCellValue("H".$i,trim($Avail7d))
-					->setCellValue("I".$i,trim($Avail1d))
-					->setCellValue("J".$i,trim($Lat30d))
-					->setCellValue("K".$i,trim($Lat7d))
-					->setCellValue("L".$i,trim($Lat1d))
-					->setCellValue("M".$i,trim($Pl30d))
-					->setCellValue("N".$i,trim($Pl7d))
-					->setCellValue("O".$i,trim($Pl1d));
+					->setCellValue("D".$i,trim($ar['displayName']))
+					->setCellValue("E".$i,trim($ar['ipAddressCurrent']))
+					->setCellValue("F".$i,$type)
+					->setCellValue("G".$i,trim($ar['jobNumber']))
+					->setCellValue("H".$i,$numcases)
+					->setCellValue("I".$i,trim($Avail30d))
+					->setCellValue("J".$i,trim($Avail7d))
+					->setCellValue("K".$i,trim($Avail1d))
+					->setCellValue("L".$i,trim($Lat30d))
+					->setCellValue("M".$i,trim($Lat7d))
+					->setCellValue("N".$i,trim($Lat1d))
+					->setCellValue("O".$i,trim($Pl30d))
+					->setCellValue("P".$i,trim($Pl7d))
+					->setCellValue("Q".$i,trim($Pl1d));
 		};
 	};
 
@@ -118,15 +120,15 @@ $excelreport->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
 $excelreport->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
 $excelreport->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
 $excelreport->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
-//$excelreport->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
-//$excelreport->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+$excelreport->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+$excelreport->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
 //$excelreport->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
 
 /* Set Formatting on Sheet */
-$excelreport->getActiveSheet()->getStyle('A1:O2')->getFont()->setBold(true);
-$excelreport->getActiveSheet()->getStyle('A2:O2')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THICK);
-$excelreport->getActiveSheet()->getStyle('G1:I'.$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFCCCCCC');
-$excelreport->getActiveSheet()->getStyle('M1:O'.$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFCCCCCC');
+$excelreport->getActiveSheet()->getStyle('A1:Q2')->getFont()->setBold(true);
+$excelreport->getActiveSheet()->getStyle('A2:Q2')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THICK);
+$excelreport->getActiveSheet()->getStyle('I1:K'.$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFCCCCCC');
+$excelreport->getActiveSheet()->getStyle('O1:Q'.$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FFCCCCCC');
 
 /* Write it out to a temp file */
 $objWriter = PHPExcel_IOFactory::createWriter($excelreport, 'Excel2007');
