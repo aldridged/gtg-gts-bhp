@@ -385,6 +385,7 @@ function jsMapInit()
                 if (jsmap) {
                     jsmap.JSClearLayers();
                     jsmap.JSDrawPushpins(null, RECENTER_ZOOM, 0);
+					//JSUpdateDeviceTree();
                 } else {
                     // seems to be necessary on IE (it doesn't throw an exception)
                     alert("Error [jsMapInit]:\nError occured while creating JSMap");
@@ -397,6 +398,16 @@ function jsMapInit()
         }
     }
 };
+
+// Update Device Tree
+//function JSUpdateDeviceTree()
+//{
+//  var dpts = jsvDetailPoints;
+//  for (var i = 0; i < dpts.length; i++) {
+//       var cpt = jsvDetailAscending? dpts[i] : dpts[dpts.length - i - 1]; // JSDetailPoint
+//      $("#explorer").jstree("create","#"+document.SelectDeviceForm.group.value,"last",cpt.device,false,true);
+//  };
+//};
 
 // ----------------------------------------------------------------------------
 // --- unload
@@ -1143,7 +1154,7 @@ function jsmCreatePushPin(rcdNdx, dsNdx, ppNdx, evRcd)
 	*/
     if (IS_FLEET) html += "<tr class='infoBoxRow'><td class='infoBoxCell'><button onClick=\"var mydiv = $(document.createElement('div'));$(mydiv).html('<iframe src=\\'/mrtg/"+evRcd.optDesc[0]+".html\\' frameborder=\\'0\\' height=\\'100%\\' width=\\'100%\\' scrolling=\\'auto\\'></iframe>');\$(mydiv).dialog({title:'Device Traffic Data',height:500,width:700,modal:true});\">Device Traffic Data</button></td></tr>";
     if (IS_FLEET) html += "<tr class='infoBoxRow'><td class='infoBoxCell'><button onClick=\"var mydiv = $(document.createElement('div'));$(mydiv).html('<iframe src=\\'http://dcmaster.mydatacom.com/portal/job.php?jobid="+evRcd.optDesc[7]+"\\' frameborder=\\'0\\' height=\\'100%\\' width=\\'100%\\' scrolling=\\'auto\\'></iframe>');\$(mydiv).dialog({title:'Device Cases and Attachments',height:500,width:700,modal:true});\">Device Cases and Attachments</button></td></tr>";
-    if (IS_FLEET) html += "<tr class='infoBowRow'><td class='infoBoxCell'><a href='mailto:noc@getdatacom.com?subject=Trouble-Ticket-"+(dev.split(' ').join('-')).split('#').join('')+"'>Raise Trouble Ticket</a></td></tr>";
+    if (IS_FLEET) html += "<tr class='infoBoxRow'><td class='infoBoxCell'><button onClick=\"var mydiv = $(document.createElement('div'));$(mydiv).html('<iframe src=\\'http://dcmaster.mydatacom.com/portal/displayRaiseCase.php?job="+evRcd.optDesc[7]+"\\' frameborder=\\'0\\' height=\\'100%\\' width=\\'100%\\' scrolling=\\'auto\\'></iframe>');\$(mydiv).dialog({title:'Raise Trouble Ticket',height:500,width:700,modal:true});\">Raise Trouble Ticket</button></td></tr>";
     html += "</table>";
     html += "<script type='text/javascript'> jsmHighlightDetailRow("+rcdNdx+",true); </script>\n";
 
