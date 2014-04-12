@@ -731,7 +731,7 @@ JSMap.prototype._addPushpin = function(pp)
             false);                                                                 // draggable
         //GEvent.addListener(marker, 'click', function() { marker.openInfoWindowHtml(pp.html); });
 		marker.setInfoWindowHTML(pp.html);
-		google.maps.event.addListener(marker, 'click', function() { marker.openPushpinPopup(); });
+		google.maps.event.addListener(marker, 'mouseover', function() { marker.openPushpinPopup(); });
         //this.gmapGoogleMap.addOverlay(marker);
 		marker.setMap(this.gmapGoogleMap);
         pp.marker = marker;
