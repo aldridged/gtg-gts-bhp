@@ -76,7 +76,7 @@ google.maps.Marker.prototype.setInfoWindowHTML = function(html)
 /* open pushpin popup */
 google.maps.Marker.prototype.openPushpinPopup = function()
 {
-    if (this.infoWindow && !this.infoWindowOpen && this.getMap()) {
+    if (this.infoWindow && this.getMap()) {
         this.infoWindow.open(this.getMap(), this);
         this.infoWindowOpen = true;
     }
