@@ -822,7 +822,7 @@ JSMap.prototype._showPushpinPopup = function(pp)
 JSMap.prototype._hidePushpinPopup = function(pp)
 {
     //GEvent.trigger(pp.marker,"click");
-	google.maps.event.trigger(pp.marker,"click");
+	//google.maps.event.trigger(pp.marker,"click");
     if (pp) {
         jsmHighlightDetailRow(pp.rcdNdx, false);
     }
