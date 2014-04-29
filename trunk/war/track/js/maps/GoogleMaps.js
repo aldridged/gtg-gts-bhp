@@ -828,6 +828,7 @@ JSMap.prototype._hidePushpinPopup = function(pp)
     }
     if (this.visiblePopupInfoBox) {
         jsmHighlightDetailRow(this.visiblePopupInfoBox.rcdNdx, false);
+	this.visiblePopupInfoBox.marker.closePushpinPopup();
         this.visiblePopupInfoBox = null;
     }
 };
